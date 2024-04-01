@@ -1,5 +1,7 @@
 package ayds.songinfo.home.model.entities
 
+import android.icu.number.Precision
+
 sealed class Song {
     data class SpotifySong(
         val id: String,
@@ -9,10 +11,9 @@ sealed class Song {
         val releaseDate: String,
         val spotifyUrl: String,
         val imageUrl: String,
-        var isLocallyStored: Boolean = false
+        val releaseDatePrecision: String,
+        var isLocallyStored: Boolean = false,
     ) : Song() {
-
-        val year: String = releaseDate.split("-").first()
     }
 
     object EmptySong : Song()

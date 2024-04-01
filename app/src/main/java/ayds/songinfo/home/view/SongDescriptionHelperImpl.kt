@@ -18,8 +18,21 @@ internal class SongDescriptionHelperImpl : SongDescriptionHelper {
                 }\n" +
                         "Artist: ${song.artistName}\n" +
                         "Album: ${song.albumName}\n" +
-                        "Year: ${song.year}"
+                        "Release Date: ${
+                            this.getPreciseDate(song.releaseDatePrecision,song.releaseDate)
+                        }"
             else -> "Song not found"
         }
     }
+
+    private fun getPreciseDate(precision: String, date: String): String =
+        when{
+            precision == "month" ->
+                 date.split("-").take(2).joinToString {"-"}
+
+            precision == "year" ->
+                 date.split("-").first()
+
+            else -> date
+        }
 }

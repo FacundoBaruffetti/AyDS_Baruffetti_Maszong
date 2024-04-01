@@ -1,5 +1,6 @@
 package ayds.songinfo.home.model.repository.local.spotify.room
 
+import android.icu.number.Precision
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -13,4 +14,5 @@ data class SongEntity(
     val releaseDate: String,
     val spotifyUrl: String,
     val imageUrl: String,
+    val releaseDatePrecision: String,
 )
