@@ -9,6 +9,8 @@ interface SongDescriptionHelper {
 }
 
 internal class SongDescriptionHelperImpl : SongDescriptionHelper {
+
+    //private var
     override fun getSongDescriptionText(song: Song): String {
         return when (song) {
             is SpotifySong ->
@@ -19,20 +21,51 @@ internal class SongDescriptionHelperImpl : SongDescriptionHelper {
                         "Artist: ${song.artistName}\n" +
                         "Album: ${song.albumName}\n" +
                         "Release Date: ${
-                            this.getPreciseDate(song.releaseDatePrecision,song.releaseDate)
+                            song.releaseDate()
                         }"
             else -> "Song not found"
         }
     }
 
-    private fun getPreciseDate(precision: String, date: String): String =
-        when{
-            precision == "month" ->
-                 date.split("-").take(2).joinToString {"-"}
+    private fun SpotifySong.releaseDate(): String =
+        when(this.releaseDatePrecision){
+            "day" -> {
+                val year = this.releaseDate.split("-").first()
+                val month = this.releaseDate.split("-")[1]
+                val day = this.releaseDate.split("-")[2]
+                "$day/$month/$year"
+            }
 
-            precision == "year" ->
-                 date.split("-").first()
+            "month" -> {
+                val year = this.releaseDate.split("-").first()
+                val month = this.releaseDate.split("-")[1]
+                "${month.toInt().toMonthString()},$year"
+            }
 
-            else -> date
+            "year" -> {
+                val isLeapYear = isLeapYear(this.releaseDate.toInt())
+                "${this.releaseDate} ${if (isLeapYear) "(leap year)" else "(not a leap year)"}"
+            }
+
+            else -> ""
         }
+    private fun Int.toMonthString() =
+        when (this) {
+            1 -> "January"
+            2 -> "February"
+            3 -> "March"
+            4 -> "April"
+            5 -> "May"
+            6 -> "June"
+            7 -> "July"
+            8 -> "August"
+            9 -> "September"
+            10 -> "October"
+            11 -> "November"
+            12 -> "December"
+            else -> ""
+        }
+
+    private fun isLeapYear(n: Int) = (n % 4 == 0) && (n % 100 != 0 || n % 400 == 0)
+
 }
