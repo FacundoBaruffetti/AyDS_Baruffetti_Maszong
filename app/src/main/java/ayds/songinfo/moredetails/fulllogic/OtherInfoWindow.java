@@ -31,33 +31,28 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class OtherInfoWindow extends Activity {
 
-  public final static String ARTIST_NAME_EXTRA = "artistName";
-
-  private TextView textPane1;
+  private final static String ARTIST_NAME_EXTRA = "artistName";
+  private TextView articleTextView;
+  private ArticleDatabase articleDatabase = null;
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     setContentView(R.layout.activity_other_info);
-
-    textPane1 = findViewById(R.id.textPane1);
-
-    open(getIntent().getStringExtra(ARTIST_NAME_EXTRA));
-  }
-
-  public void getARtistInfo(String artistName) {
-
-    getArticleDescription(artistName, createLastFMAPI(artistName));
-
-  }
-
-  private ArticleDatabase dataBase = null;
-
-  private void open(String artist) {
+    initProperties();
     initializeDatabase();
+    getArtistInfoAsync();
+  }
 
-    getARtistInfo(artist);
+  private void initProperties() {
+    articleTextView = findViewById(R.id.textPane1);
+  }
+
+  private void getArtistInfoAsync() {
+
+    getArtistInfo();
+
   }
 
   public static String textToHtml(String text, String term) {
@@ -95,12 +90,14 @@ public class OtherInfoWindow extends Activity {
     return result;
   }
   
-  private void getArticleDescription(String artistName, LastFMAPI lastFMAPI) {
+  private void getArtistInfo() {
     new Thread(new Runnable() {
+      String artistName = getIntent().getStringExtra(ARTIST_NAME_EXTRA);
+      LastFMAPI lastFMAPI = createLastFMAPI(artistName);
       @Override
       public void run() {
 
-        ArticleEntity article = dataBase.ArticleDao().getArticleByArtistName(artistName);
+        ArticleEntity article = articleDatabase.ArticleDao().getArticleByArtistName(artistName);
 
         String description;
 
@@ -184,7 +181,7 @@ public class OtherInfoWindow extends Activity {
     new Thread(new Runnable() {
       @Override
       public void run() {
-        dataBase.ArticleDao().insertArticle(new ArticleEntity(artistName, finalDescription, url.getAsString()));
+        articleDatabase.ArticleDao().insertArticle(new ArticleEntity(artistName, finalDescription, url.getAsString()));
       }
     }).start();
   }
@@ -198,20 +195,20 @@ public class OtherInfoWindow extends Activity {
     runOnUiThread( () -> {
       Picasso.get().load(imageUrl).into((ImageView) findViewById(R.id.imageView1));
 
-      textPane1.setText(Html.fromHtml(finalDescription));
+      articleTextView.setText(Html.fromHtml(finalDescription));
 
     });
   }
 
   private void initializeDatabase() {
 
-    dataBase = Room.databaseBuilder(this, ArticleDatabase.class, "database-name-thename").build();
+    articleDatabase = Room.databaseBuilder(this, ArticleDatabase.class, "database-name-thename").build();
     new Thread(new Runnable() {
       @Override
       public void run() {
-        dataBase.ArticleDao().insertArticle(new ArticleEntity( "test", "sarasa", "")  );
-        Log.e("TAG", ""+ dataBase.ArticleDao().getArticleByArtistName("test"));
-        Log.e("TAG", ""+ dataBase.ArticleDao().getArticleByArtistName("nada"));
+        articleDatabase.ArticleDao().insertArticle(new ArticleEntity( "test", "sarasa", "")  );
+        Log.e("TAG", ""+ articleDatabase.ArticleDao().getArticleByArtistName("test"));
+        Log.e("TAG", ""+ articleDatabase.ArticleDao().getArticleByArtistName("nada"));
 
       }
     }).start();
