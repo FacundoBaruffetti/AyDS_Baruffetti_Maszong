@@ -5,8 +5,6 @@ import ayds.songinfo.moredetails.injectors
 object OtherInfoPresenterInjector {
 
     fun onViewStarted(view: OtherInfoView) {
-        ayds.songinfo.moredetails.presentation.OtherInfoPresenterImpl(RepositoryInjector.getRepository()).apply {
-            setOtherInfoView(view)
-        }
+        ayds.songinfo.moredetails.presentation.OtherInfoPresenterImpl(RepositoryInjector.getRepository())
     }
 }

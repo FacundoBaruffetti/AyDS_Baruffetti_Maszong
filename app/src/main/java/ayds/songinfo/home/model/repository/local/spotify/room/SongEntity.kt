@@ -1,6 +1,5 @@
 package ayds.songinfo.home.model.repository.local.spotify.room
 
-import android.icu.number.Precision
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

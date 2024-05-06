@@ -106,7 +106,7 @@ class OtherInfoWindow : Activity() {
     private fun getArticleFromService(artistName: String): ArtistBiography{
         var artistBiography = ArtistBiography(artistName, "", "")
         try {
-            val callResponse = getSongFromService(artistName)
+            val callResponse = getArticleFromService(artistName)
             artistBiography = getArtistBioFromExternalData(callResponse.body(), artistName)
         } catch (e1: IOException) {
             e1.printStackTrace()
@@ -129,7 +129,7 @@ class OtherInfoWindow : Activity() {
         return ArtistBiography(artistName, text, url.asString)
     }
 
-    private fun getSongFromService(artistName: String) =
+    private fun getArticleFromService(artistName: String) =
         lastFMAPI.getArtistInfo(artistName).execute()
 
     private fun insertArtistIntoDB(artistBiography: ArtistBiography){

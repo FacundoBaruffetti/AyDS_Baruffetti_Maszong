@@ -1,8 +1,9 @@
-package ayds.songinfo.home.view
+package ayds.songinfo.moredetails.injectors
 
 import ayds.songinfo.moredetails.injectors
+import ayds.songinfo.moredetails.presentation.OtherInfoView
 
-object HomeViewInjector {
+object OtherInfoViewInjector {
 
     fun init(view: OtherInfoView) {
         RepositorylInjector.initRepository(view)

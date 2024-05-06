@@ -63,9 +63,6 @@ internal class OtherInfoPresenterImpl(
         Picasso.get().load(LASTFM_IMAGE_URL).into(lastFMImageView)
     }
 
-    private fun getArtistName() =
-        intent.getStringExtra(ARTIST_NAME_EXTRA) ?: throw Exception("Missing artist name")
-
     private fun updateArticleText(artistBiography: ArtistBiography) {
         val text = artistBiography.biography.replace("\\n", "\n")
         articleTextView.text = Html.fromHtml(textToHtml(text, artistBiography.artistName))
@@ -85,9 +82,5 @@ internal class OtherInfoPresenterImpl(
         builder.append(textWithBold)
         builder.append("</font></div></html>")
         return builder.toString()
-    }
-
-    companion object {
-        const val ARTIST_NAME_EXTRA = "artistName"
     }
 }

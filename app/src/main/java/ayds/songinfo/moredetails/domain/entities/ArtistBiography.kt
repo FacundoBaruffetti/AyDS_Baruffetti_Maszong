@@ -1,10 +1,11 @@
-sealed class ArtistBiography {
-    data class SpotifyArtistBiography(
+sealed class Article {
+    data class ArtistBiography(
         val artistName: String,
         val biography: String,
         val articleUrl: String,
-    ) : ArtistBiography() {
+        //var isLocallyStored: Boolean = false,
+    ) : Article() {
     }
 
-    object EmptyBiography : ArtistBiography()
+    object EmptyBiography : Article()
 }

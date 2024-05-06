@@ -1,16 +1,15 @@
-package ayds.songinfo.home.model
+package ayds.songinfo.moredetails.injectors
 
 import android.content.Context
 import androidx.room.Room
-import ayds.songinfo.home.model.repository.SongRepository
-import ayds.songinfo.home.model.repository.SongRepositoryImpl
 import ayds.songinfo.home.model.repository.external.spotify.SpotifyInjector
-import ayds.songinfo.home.model.repository.external.spotify.SpotifyTrackService
-import ayds.songinfo.home.model.repository.local.spotify.SpotifyLocalStorage
-import ayds.songinfo.home.model.repository.local.spotify.room.SongDatabase
-import ayds.songinfo.home.model.repository.local.spotify.room.SpotifyLocalStorageRoomImpl
-import ayds.songinfo.home.view.HomeView
+import ayds.songinfo.moredetails.data.external.spotify.SpotifyTrackService
+import ayds.songinfo.moredetails.data.local.ArticleLocalStorage
+import ayds.songinfo.moredetails.data.local.room.ArticleDatabase
+import ayds.songinfo.moredetails.data.local.room.ArticleLocalStorageRoomImpl
+import ayds.songinfo.moredetails.presentation.OtherInfoView
 import ayds.songinfo.moredetails.domain.Repository
+import ayds.songinfo.moredetails.data.RepositoryImpl
 
 
 const val ARTICLE_BD_NAME = "article-database"
@@ -34,10 +33,10 @@ object RepositoryInjector {
             .addConverterFactory(ScalarsConverterFactory.create()
             ).build()
 
-        val spotifyLocalRoomStorage: SpotifyLocalStorage = SpotifyLocalStorageRoomImpl(dataBase)
+        val articleLocalRoomStorage: ArticleLocalStorage = ArticleLocalStorageRoomImpl(articleDatabase)
 
-        val spotifyTrackService: SpotifyTrackService = SpotifyInjector.spotifyTrackService
+        val articleTrackService: ArticleTrackService = SpotifyInjector.articleTrackService
 
-        repository = RepositoryImpl(spotifyLocalRoomStorage, spotifyTrackService)
+        repository = RepositoryImpl(articleLocalRoomStorage, articleTrackService)
     }
 }
