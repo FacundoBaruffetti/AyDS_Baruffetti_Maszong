@@ -1,6 +1,7 @@
-package ayds.songinfo.moredetails.fulllogic
+package ayds.songinfo.moredetails.data.local.room
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 

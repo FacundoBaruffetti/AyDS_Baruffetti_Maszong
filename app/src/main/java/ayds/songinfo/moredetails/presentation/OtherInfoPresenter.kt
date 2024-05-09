@@ -1,86 +1,31 @@
-package ayds.songinfo.moredetails.presenter
+package ayds.songinfo.moredetails.presentation
 
-import ayds.observer.Observer
-import ayds.songinfo.moredetails.model.OtherInfoModel
-import ayds.songinfo.moredetails.view.UiEvent
-import ayds.songinfo.moredetails.view.OtherInfoView
-import ayds.songinfo.moredetails.domain
-import jdk.jfr.internal.Repository
-
-
-
+import ayds.observer.Observable
+import ayds.observer.Subject
+import ayds.songinfo.moredetails.domain.entities.ArtistBiography
+import ayds.songinfo.moredetails.domain.OtherInfoRepository
 
 interface OtherInfoPresenter {
-    val uiEventObservable: Observable<MoreDetailsUiEvent>
-    val uiState: MoreDetailsUiState
+    val artistBiographyObservable: Observable<ArtistBiographyUiState>
+    fun getArtistInfo(artistName: String)
 }
 
 internal class OtherInfoPresenterImpl(
-    private val repository: Repository
-) : ayds.songinfo.home.controller.HomeController {
+    private val repository: OtherInfoRepository,
+    private val artistBiographyDescriptionHelper: ArtistBiographyDescriptionHelper
+) : OtherInfoPresenter {
 
-    private val onActionSubject = Subject<MoreDetailsUiState>()
+    override val artistBiographyObservable = Subject<ArtistBiographyUiState>()
 
-    private val observer: Observer<MoreDetailsUiEvent> =
-        Observer { value ->
-            when (value) {
-                UiEvent.GetArtistInfo -> getArtistInfo()
-            }
-        }
+    override fun getArtistInfo(artistName: String){
+        val artistBiography = repository.getArtistBiography(artistName)
 
-    override var uiState: MoreDetailsUiState = MoreDetailsUiState()
-
-
-    private fun getArtistInfo(){
-        Thread {
-            val artistBiography = repository.getArtistBiography(uiState.artistName)
-            updateUi(artistBiography)
-        }.start()
+        artistBiographyObservable.notify(artistBiography.toUiState())
     }
 
-
-    private fun updateUi(artistBiography: ArtistBiography) {
-        runOnUiThread {
-            updateOpenUrlButton(artistBiography)
-            updateLastFMLogo()
-            updateArticleText(artistBiography)
-        }
-    }
-
-    private fun updateOpenUrlButton(artistBiography: ArtistBiography) {
-        openUrlButton.setOnClickListener {
-            navigateToUrl(artistBiography.articleUrl)
-        }
-    }
-
-    private fun navigateToUrl(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.setData(Uri.parse(url))
-        startActivity(intent)
-    }
-
-    private fun updateLastFMLogo() {
-        Picasso.get().load(LASTFM_IMAGE_URL).into(lastFMImageView)
-    }
-
-    private fun updateArticleText(artistBiography: ArtistBiography) {
-        val text = artistBiography.biography.replace("\\n", "\n")
-        articleTextView.text = Html.fromHtml(textToHtml(text, artistBiography.artistName))
-    }
-
-    private fun textToHtml(text: String, term: String?): String {
-        val builder = StringBuilder()
-        builder.append("<html><div width=400>")
-        builder.append("<font face=\"arial\">")
-        val textWithBold = text
-            .replace("'", " ")
-            .replace("\n", "<br>")
-            .replace(
-                "(?i)$term".toRegex(),
-                "<b>" + term!!.uppercase(Locale.getDefault()) + "</b>"
-            )
-        builder.append(textWithBold)
-        builder.append("</font></div></html>")
-        return builder.toString()
-    }
+    private fun ArtistBiography.toUiState() = ArtistBiographyUiState(
+        artistName,
+        artistBiographyDescriptionHelper.getDescription(this),
+        articleUrl
+    )
 }

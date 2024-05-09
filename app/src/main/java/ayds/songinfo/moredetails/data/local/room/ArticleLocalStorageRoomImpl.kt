@@ -1,11 +1,11 @@
 package ayds.songinfo.moredetails.data.local.room
 
-import ayds.songinfo.moredetails.domain.entities.Article.ArtistBiography
-import ayds.songinfo.moredetails.data.local.room.LocalStorage
+import ayds.songinfo.moredetails.data.local.ArticleLocalStorage
+import ayds.songinfo.moredetails.domain.entities.ArtistBiography
 
 internal class ArticleLocalStorageRoomImpl(
     dataBase: ArticleDatabase,
-) : LocalStorage {
+) : ArticleLocalStorage {
 
     private val articleDao: ArticleDao = dataBase.ArticleDao()
 

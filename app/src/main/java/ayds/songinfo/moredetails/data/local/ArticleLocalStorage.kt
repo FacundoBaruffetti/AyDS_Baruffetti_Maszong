@@ -1,6 +1,6 @@
 package ayds.songinfo.moredetails.data.local
 
-import ayds.songinfo.moredetails.domain.entities.Article.ArtistBiography
+import ayds.songinfo.moredetails.domain.entities.ArtistBiography
 
 interface ArticleLocalStorage {
 

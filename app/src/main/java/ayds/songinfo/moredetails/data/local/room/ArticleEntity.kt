@@ -1,4 +1,5 @@
-package ayds.songinfo.moredetails.fulllogic
+package ayds.songinfo.moredetails.data.local.room
+
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

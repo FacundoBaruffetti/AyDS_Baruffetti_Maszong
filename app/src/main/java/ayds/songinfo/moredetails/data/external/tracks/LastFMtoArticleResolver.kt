@@ -1,37 +1,33 @@
-package ayds.songinfo.home.model.repository.external.spotify.tracks
+package ayds.songinfo.moredetails.data.external.tracks
+
 
 import com.google.gson.Gson
-import ayds.songinfo.moredetails.domain.entities.Article.ArtistBiography
+import ayds.songinfo.moredetails.domain.entities.ArtistBiography
 import com.google.gson.JsonObject
 
-interface lastFMtoArticleResolver {
-    fun getArtistBioFromExternalData(serviceData: String?, artistName: String): ArtistBiography?
+interface LastFMtoArticleResolver {
+    fun map(serviceData: String?, artistName: String): ArtistBiography
 }
 
 
-private const val ARTISTS = "artists"
+private const val ARTIST = "artist"
 private const val BIO = "bio"
 private const val CONTENT = "content"
 private const val URL = "url"
 
+internal class JsonToArticleResolver : LastFMtoArticleResolver {
 
-internal class JsonToArticleResolver : lastFMtoArticleResolver {
+    override fun map( serviceData: String?, artistName: String ): ArtistBiography {
 
-    override fun getArtistBioFromExternalData( serviceData: String?, artistName: String ): ArtistBiography? =
-        try {
-            serviceData?.getFirstItem()?.let { artist ->
-                ArtistBiography(
-                  artistName, artist.getBiographyText(), artist.getArticleUrl()
-                )
-            }
-        } catch (e: Exception) {
-            null
+        val artist = getArtist(serviceData)
+
+        return ArtistBiography (artistName, artist.getBiographyText(), artist.getArticleUrl())
         }
 
-    private fun String?.getFirstItem(): JsonObject {
+    private fun getArtist(serviceData: String?): JsonObject {
         val jobj = Gson().fromJson(serviceData, JsonObject::class.java)
-        val artists = jobj[ARTISTS].getAsJsonArray()
-        return artists[0].asJsonObject
+        val artist = jobj[ARTIST].getAsJsonObject()
+        return artist
     }
 
     private fun JsonObject.getBiographyText(): String {

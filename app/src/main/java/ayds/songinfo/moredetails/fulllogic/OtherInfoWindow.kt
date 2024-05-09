@@ -12,6 +12,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.room.Room.databaseBuilder
 import ayds.songinfo.R
+import ayds.songinfo.moredetails.data.external.tracks.LastFMAPI
+import ayds.songinfo.moredetails.data.local.room.ArticleDatabase
+import ayds.songinfo.moredetails.data.local.room.ArticleEntity
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
@@ -63,6 +66,8 @@ class OtherInfoWindow : Activity() {
             .baseUrl(LASTFM_BASE_URL)
             .addConverterFactory(ScalarsConverterFactory.create())
             .build()
+            
+            lastFMAPI = retrofit.create(LastFMAPI::class.java)
     }
 
     private fun getArtistInfoAsync(){
@@ -106,7 +111,7 @@ class OtherInfoWindow : Activity() {
     private fun getArticleFromService(artistName: String): ArtistBiography{
         var artistBiography = ArtistBiography(artistName, "", "")
         try {
-            val callResponse = getArticleFromService(artistName)
+            val callResponse = getArticleFromLastFMAPI(artistName)
             artistBiography = getArtistBioFromExternalData(callResponse.body(), artistName)
         } catch (e1: IOException) {
             e1.printStackTrace()
@@ -129,7 +134,7 @@ class OtherInfoWindow : Activity() {
         return ArtistBiography(artistName, text, url.asString)
     }
 
-    private fun getArticleFromService(artistName: String) =
+    private fun getArticleFromLastFMAPI(artistName: String) =
         lastFMAPI.getArtistInfo(artistName).execute()
 
     private fun insertArtistIntoDB(artistBiography: ArtistBiography){

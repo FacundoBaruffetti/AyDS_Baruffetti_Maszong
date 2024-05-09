@@ -1,11 +1,8 @@
-sealed class Article {
-    data class ArtistBiography(
-        val artistName: String,
-        val biography: String,
-        val articleUrl: String,
-        //var isLocallyStored: Boolean = false,
-    ) : Article() {
-    }
+package ayds.songinfo.moredetails.domain.entities
 
-    object EmptyBiography : Article()
-}
+data class ArtistBiography(
+    val artistName: String,
+    val biography: String,
+    val articleUrl: String,
+    var isLocallyStored: Boolean = false
+)

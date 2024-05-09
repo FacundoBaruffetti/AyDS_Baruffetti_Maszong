@@ -1,4 +1,4 @@
-package ayds.songinfo.moredetails.data.local
+package ayds.songinfo.moredetails.data.local.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
