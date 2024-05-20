@@ -9,6 +9,7 @@ interface ArtistBiographyDescriptionHelper {
 
 private const val HEADER = "<html><div width=400><font face=\"arial\">"
 private const val FOOTER = "</font></div></html>"
+private const val PREFIX = "[*]"
 
 internal class ArtistBiographyDescriptionHelperImpl : ArtistBiographyDescriptionHelper {
 
@@ -18,8 +19,8 @@ internal class ArtistBiographyDescriptionHelperImpl : ArtistBiographyDescription
     }
 
     private fun getTextBiography(artistBiography: ArtistBiography): String {
-        val prefix = if (artistBiography.isLocallyStored) "[*]" else ""
-        val text = artistBiography.biography.replace("\\n", "\n")
+        val prefix = if (artistBiography.isLocallyStored) PREFIX else ""
+        val text = artistBiography.biography
         return "$prefix$text"
     }
 
@@ -27,6 +28,7 @@ internal class ArtistBiographyDescriptionHelperImpl : ArtistBiographyDescription
         val builder = StringBuilder()
         builder.append(HEADER)
         val textWithBold = text
+            .replace("\\n", "\n")
             .replace("'", " ")
             .replace("\n", "<br>")
             .replace(
