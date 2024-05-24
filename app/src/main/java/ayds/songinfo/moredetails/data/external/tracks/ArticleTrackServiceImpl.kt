@@ -11,7 +11,7 @@ internal class ArticleTrackServiceImpl(
 ) : ArticleTrackService {
 
     override fun getArticle(artistName: String): ArtistBiography {
-        var artistBiography = ArtistBiography(artistName, "", "")
+        lateinit var artistBiography: ArtistBiography
         
         try {
 

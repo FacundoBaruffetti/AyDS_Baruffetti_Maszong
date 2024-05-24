@@ -5,7 +5,7 @@ import ayds.songinfo.moredetails.data.local.ArticleLocalStorage
 import ayds.songinfo.moredetails.domain.entities.ArtistBiography
 import ayds.songinfo.moredetails.domain.OtherInfoRepository
 
-internal class OtherInfoRepositoryImpl(
+class OtherInfoRepositoryImpl(
     private val articleLocalStorage: ArticleLocalStorage,
     private val articleTrackService: ArticleTrackService
 ) : OtherInfoRepository {
@@ -27,6 +27,6 @@ internal class OtherInfoRepositoryImpl(
         return artistBiography
     }
 
-    private fun ArtistBiography.markItAsLocal() = copy(biography = "[*]$biography")
+    private fun ArtistBiography.markItAsLocal() = copy(isLocallyStored = true)
 
 }
