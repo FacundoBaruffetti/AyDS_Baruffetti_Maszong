@@ -1,12 +1,12 @@
-package ayds.artist.external.LastFMService
+package ayds.artist.external.LastFMService.data
 
 
-import ayds.artist.external.ArtistBiography
+import ayds.artist.external.ExternalArtistBiography
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 
 interface LastFMtoArticleResolver {
-    fun map(serviceData: String?, artistName: String): ArtistBiography
+    fun map(serviceData: String?, artistName: String): ExternalArtistBiography
 }
 
 
@@ -15,13 +15,13 @@ private const val BIO = "bio"
 private const val CONTENT = "content"
 private const val URL = "url"
 
-class JsonToArticleResolver : LastFMtoArticleResolver {
+internal class JsonToArticleResolver : LastFMtoArticleResolver {
 
-    override fun map( serviceData: String?, artistName: String ): ArtistBiography {
+    override fun map( serviceData: String?, artistName: String ): ExternalArtistBiography {
 
         val artist = getArtist(serviceData)
 
-        return ArtistBiography (artistName, artist.getBiographyText(), artist.getArticleUrl())
+        return ExternalArtistBiography (artistName, artist.getBiographyText(), artist.getArticleUrl())
         }
 
     private fun getArtist(serviceData: String?): JsonObject {

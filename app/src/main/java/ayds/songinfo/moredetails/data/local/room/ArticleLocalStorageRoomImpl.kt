@@ -23,9 +23,23 @@ internal class ArticleLocalStorageRoomImpl(
         this.articleUrl,
     )
 
+//    private fun ArtistBiography.toCard() = Card(
+//        this.artistName,
+//        this.biography,
+//        this.articleUrl,
+//        "lastFM",
+//        "logoLastFM",
+//    )
+
     private fun ArticleEntity.toArtistBiography() = ArtistBiography(
         this.artistName,
         this.biography,
         this.articleUrl,
     )
+
+//    private fun Card.toArtistBiography() = ArtistBiography(
+//        this.artistName,
+//        this.description,
+//        this.infoUrl,
+//    )
 }

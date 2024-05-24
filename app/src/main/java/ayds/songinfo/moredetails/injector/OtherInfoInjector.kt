@@ -2,20 +2,16 @@ package ayds.songinfo.moredetails.injector
 
 import android.content.Context
 import androidx.room.Room.databaseBuilder
-import ayds.artist.external.LastFMService.LastFMAPI
-import ayds.artist.external.LastFMService.ArticleTrackServiceImpl
-import ayds.artist.external.LastFMService.JsonToArticleResolver
+import ayds.artist.external.LastFMService.injector.LastFMInjector
 import ayds.songinfo.moredetails.data.OtherInfoRepositoryImpl
 import ayds.songinfo.moredetails.data.local.room.ArticleDatabase
 import ayds.songinfo.moredetails.data.local.room.ArticleLocalStorageRoomImpl
 import ayds.songinfo.moredetails.presentation.ArtistBiographyDescriptionHelperImpl
 import ayds.songinfo.moredetails.presentation.OtherInfoPresenter
 import ayds.songinfo.moredetails.presentation.OtherInfoPresenterImpl
-import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
 
 private const val ARTICLE_BD_NAME = "article-database"
-private const val LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"
+//private const val LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"
 
 object OtherInfoInjector {
 
@@ -28,21 +24,21 @@ object OtherInfoInjector {
             ARTICLE_BD_NAME
         ).build()
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl(LASTFM_BASE_URL)
-            .addConverterFactory(
-                ScalarsConverterFactory.create()
-            ).build()
-
-        val lastFMAPI = retrofit.create(LastFMAPI::class.java)
-
-        val lastFMtoArticleResolver = JsonToArticleResolver()
-
-        val articleTrackService = ArticleTrackServiceImpl(lastFMAPI, lastFMtoArticleResolver)
-
+//        val retrofit = Retrofit.Builder()
+//            .baseUrl(LASTFM_BASE_URL)
+//            .addConverterFactory(
+//                ScalarsConverterFactory.create()
+//            ).build()
+//
+//        val lastFMAPI = retrofit.create(LastFMAPI::class.java)
+//
+//        val lastFMtoArticleResolver = JsonToArticleResolver()
+//
+//        val articleTrackService = ArticleTrackServiceImpl(lastFMAPI, lastFMtoArticleResolver)
+//
         val articleLocalRoomStorage = ArticleLocalStorageRoomImpl(articleDatabase)
 
-        val repository = OtherInfoRepositoryImpl(articleLocalRoomStorage, articleTrackService)
+        val repository = OtherInfoRepositoryImpl(articleLocalRoomStorage, LastFMInjector.articleTrackService)
 
         val artistBiographyDescriptionHelper = ArtistBiographyDescriptionHelperImpl()
 

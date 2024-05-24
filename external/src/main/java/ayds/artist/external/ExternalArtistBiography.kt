@@ -1,6 +1,6 @@
 package ayds.artist.external
 
-data class ArtistBiography(
+data class ExternalArtistBiography(
     val artistName: String,
     val biography: String,
     val articleUrl: String,

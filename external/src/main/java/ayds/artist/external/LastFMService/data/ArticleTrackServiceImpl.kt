@@ -1,16 +1,16 @@
-package ayds.artist.external.LastFMService
+package ayds.artist.external.LastFMService.data
 
-import ayds.artist.external.ArtistBiography
+import ayds.artist.external.ExternalArtistBiography
 import java.io.IOException
 
-class ArticleTrackServiceImpl(
+internal class ArticleTrackServiceImpl(
     private val lastFMAPI: LastFMAPI,
     private val lastFMtoArticleResolver: LastFMtoArticleResolver,
 ) : ArticleTrackService {
 
-    override fun getArticle(artistName: String): ArtistBiography {
-        lateinit var artistBiography: ArtistBiography
-        
+    override fun getArticle(artistName: String): ExternalArtistBiography {
+        lateinit var artistBiography: ExternalArtistBiography
+
         try {
 
             val callResponse = getArticleFromService(artistName)
