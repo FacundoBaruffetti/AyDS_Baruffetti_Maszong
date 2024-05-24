@@ -1,9 +1,9 @@
-package ayds.songinfo.moredetails.data.LastFMService
+package ayds.artist.external.LastFMService
 
-import ayds.songinfo.moredetails.domain.entities.ArtistBiography
+import ayds.artist.external.ArtistBiography
 import java.io.IOException
 
-internal class ArticleTrackServiceImpl(
+class ArticleTrackServiceImpl(
     private val lastFMAPI: LastFMAPI,
     private val lastFMtoArticleResolver: LastFMtoArticleResolver,
 ) : ArticleTrackService {

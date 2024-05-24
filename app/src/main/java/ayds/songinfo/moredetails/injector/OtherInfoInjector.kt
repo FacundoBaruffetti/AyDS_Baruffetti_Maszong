@@ -2,10 +2,10 @@ package ayds.songinfo.moredetails.injector
 
 import android.content.Context
 import androidx.room.Room.databaseBuilder
-import ayds.songinfo.moredetails.data.LastFMService.JsonToArticleResolver
-import ayds.songinfo.moredetails.data.LastFMService.ArticleTrackServiceImpl
+import ayds.artist.external.LastFMService.LastFMAPI
+import ayds.artist.external.LastFMService.ArticleTrackServiceImpl
+import ayds.artist.external.LastFMService.JsonToArticleResolver
 import ayds.songinfo.moredetails.data.OtherInfoRepositoryImpl
-import ayds.songinfo.moredetails.data.LastFMService.LastFMAPI
 import ayds.songinfo.moredetails.data.local.room.ArticleDatabase
 import ayds.songinfo.moredetails.data.local.room.ArticleLocalStorageRoomImpl
 import ayds.songinfo.moredetails.presentation.ArtistBiographyDescriptionHelperImpl
