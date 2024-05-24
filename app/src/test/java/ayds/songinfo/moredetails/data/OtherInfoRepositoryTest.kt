@@ -1,6 +1,6 @@
 package ayds.songinfo.moredetails.data
 
-import ayds.songinfo.moredetails.data.external.ArticleTrackService
+import ayds.songinfo.moredetails.data.LastFMService.ArticleTrackService
 import ayds.songinfo.moredetails.data.local.ArticleLocalStorage
 import ayds.songinfo.moredetails.domain.OtherInfoRepository
 import ayds.songinfo.moredetails.domain.entities.ArtistBiography

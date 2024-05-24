@@ -1,4 +1,4 @@
-package ayds.songinfo.moredetails.data.external.tracks
+package ayds.songinfo.moredetails.data.LastFMService
 
 
 import com.google.gson.Gson

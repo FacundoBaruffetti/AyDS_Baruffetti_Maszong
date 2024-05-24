@@ -1,13 +1,11 @@
-package ayds.songinfo.moredetails.data.external.tracks
+package ayds.songinfo.moredetails.data.LastFMService
 
 import ayds.songinfo.moredetails.domain.entities.ArtistBiography
-import ayds.songinfo.moredetails.data.external.ArticleTrackService
-import retrofit2.Response
 import java.io.IOException
 
 internal class ArticleTrackServiceImpl(
-  private val lastFMAPI: LastFMAPI,
-  private val lastFMtoArticleResolver: LastFMtoArticleResolver,
+    private val lastFMAPI: LastFMAPI,
+    private val lastFMtoArticleResolver: LastFMtoArticleResolver,
 ) : ArticleTrackService {
 
     override fun getArticle(artistName: String): ArtistBiography {
