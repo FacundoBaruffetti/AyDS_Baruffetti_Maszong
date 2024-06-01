@@ -1,26 +1,26 @@
 package ayds.songinfo.moredetails.presentation
 
-import ayds.songinfo.moredetails.domain.entities.ArtistBiography
+import ayds.songinfo.moredetails.domain.entities.Card
 import java.util.Locale
 
-interface ArtistBiographyDescriptionHelper {
-    fun getDescription(artistBiography: ArtistBiography): String
+interface CardDescriptionHelper {
+    fun getDescription(card: Card): String
 }
 
 private const val HEADER = "<html><div width=400><font face=\"arial\">"
 private const val FOOTER = "</font></div></html>"
 private const val PREFIX = "[*]"
 
-internal class ArtistBiographyDescriptionHelperImpl : ArtistBiographyDescriptionHelper {
+internal class CardDescriptionHelperImpl : CardDescriptionHelper {
 
-    override fun getDescription(artistBiography: ArtistBiography): String {
-        val text = getTextBiography(artistBiography)
-        return textToHtml(text, artistBiography.artistName)
+    override fun getDescription(card: Card): String {
+        val text = getTextBiography(card)
+        return textToHtml(text, card.artistName)
     }
 
-    private fun getTextBiography(artistBiography: ArtistBiography): String {
-        val prefix = if (artistBiography.isLocallyStored) PREFIX else ""
-        val text = artistBiography.biography
+    private fun getTextBiography(card: Card): String {
+        val prefix = if (card.isLocallyStored) PREFIX else ""
+        val text = card.content
         return "$prefix$text"
     }
 

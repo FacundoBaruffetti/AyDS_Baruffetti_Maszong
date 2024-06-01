@@ -3,45 +3,37 @@ package ayds.songinfo.moredetails.injector
 import android.content.Context
 import androidx.room.Room.databaseBuilder
 import ayds.artist.external.LastFMService.injector.LastFMInjector
+import ayds.artist.external.newyorktimes.injector.NYTimesInjector
+import ayds.artist.external.wikipedia.injector.WikipediaInjector
+import ayds.songinfo.moredetails.data.BrokerImpl
 import ayds.songinfo.moredetails.data.OtherInfoRepositoryImpl
-import ayds.songinfo.moredetails.data.local.room.ArticleDatabase
-import ayds.songinfo.moredetails.data.local.room.ArticleLocalStorageRoomImpl
-import ayds.songinfo.moredetails.presentation.ArtistBiographyDescriptionHelperImpl
+import ayds.songinfo.moredetails.data.local.room.CardDatabase
+import ayds.songinfo.moredetails.data.local.room.CardLocalStorageRoomImpl
+import ayds.songinfo.moredetails.presentation.CardDescriptionHelperImpl
 import ayds.songinfo.moredetails.presentation.OtherInfoPresenter
 import ayds.songinfo.moredetails.presentation.OtherInfoPresenterImpl
 
 private const val ARTICLE_BD_NAME = "article-database"
-//private const val LASTFM_BASE_URL = "https://ws.audioscrobbler.com/2.0/"
 
 object OtherInfoInjector {
 
     lateinit var presenter: OtherInfoPresenter
 
     fun init(context: Context) {
-        val articleDatabase = databaseBuilder(
+        val cardDatabase = databaseBuilder(
             context,
-            ArticleDatabase::class.java,
+            CardDatabase::class.java,
             ARTICLE_BD_NAME
         ).build()
 
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(LASTFM_BASE_URL)
-//            .addConverterFactory(
-//                ScalarsConverterFactory.create()
-//            ).build()
-//
-//        val lastFMAPI = retrofit.create(LastFMAPI::class.java)
-//
-//        val lastFMtoArticleResolver = JsonToArticleResolver()
-//
-//        val articleTrackService = ArticleTrackServiceImpl(lastFMAPI, lastFMtoArticleResolver)
-//
-        val articleLocalRoomStorage = ArticleLocalStorageRoomImpl(articleDatabase)
+        val cardLocalRoomStorage = CardLocalStorageRoomImpl(cardDatabase)
 
-        val repository = OtherInfoRepositoryImpl(articleLocalRoomStorage, LastFMInjector.articleTrackService)
+        val broker = BrokerImpl(LastFMInjector.articleTrackService, NYTimesInjector.nyTimesService, WikipediaInjector.wikipediaTrackService)
 
-        val artistBiographyDescriptionHelper = ArtistBiographyDescriptionHelperImpl()
+        val repository = OtherInfoRepositoryImpl(cardLocalRoomStorage, broker)
 
-        presenter = OtherInfoPresenterImpl(repository, artistBiographyDescriptionHelper)
+        val cardDescriptionHelper = CardDescriptionHelperImpl()
+
+        presenter = OtherInfoPresenterImpl(repository, cardDescriptionHelper)
     }
 }

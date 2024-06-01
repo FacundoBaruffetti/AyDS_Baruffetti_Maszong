@@ -5,11 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Card(
+data class CardEntity(
     @PrimaryKey
     val artistName: String,
-    val description: String,
+    val content: String,
     val infoUrl: String,
-    val source: String,
-    val sourceLogoUrl: String
+    val source: Int,
 )

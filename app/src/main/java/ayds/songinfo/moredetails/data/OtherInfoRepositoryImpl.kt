@@ -1,37 +1,30 @@
 package ayds.songinfo.moredetails.data
 
-
-import ayds.artist.external.LastFMService.data.ArticleTrackService
-import ayds.songinfo.moredetails.data.local.ArticleLocalStorage
-import ayds.songinfo.moredetails.domain.entities.ArtistBiography
+import ayds.songinfo.moredetails.data.local.CardLocalStorage
+import ayds.songinfo.moredetails.domain.entities.Card
 import ayds.songinfo.moredetails.domain.OtherInfoRepository
-import ayds.artist.external.ExternalArtistBiography
 
 class OtherInfoRepositoryImpl(
-    private val articleLocalStorage: ArticleLocalStorage,
-    private val articleTrackService: ArticleTrackService
-) : OtherInfoRepository {
+    private val cardLocalStorage: CardLocalStorage,
+    private val broker: Broker
+    ) : OtherInfoRepository {
 
-    override fun getArtistBiography(artistName: String): ArtistBiography{
-        val dbArticle = articleLocalStorage.getArticleByArtistName(artistName)
-        val artistBiography: ArtistBiography
+    override fun getCard(artistName: String): List<Card>{
+        val dbCard = cardLocalStorage.getCard(artistName)
+        var cardList: MutableList<Card> = mutableListOf()
 
 
-        if (dbArticle != null) {
-            artistBiography = dbArticle.apply {markItAsLocal()}
+        if (dbCard != null) {
+            cardList.add( dbCard.apply {markItAsLocal()} )
         } else {
-            artistBiography = articleTrackService.getArticle(artistName).toArtistBiography()
-            if (artistBiography.biography.isNotEmpty()) {
-                articleLocalStorage.insertArticle(artistBiography)
+            cardList = broker.getServices(artistName).toMutableList()
+            if (cardList.isNotEmpty()) {
+                cardLocalStorage.insertCard(cardList.first())
 
             }
         }
-        return artistBiography
+        return cardList
     }
 
-    private fun ArtistBiography.markItAsLocal() = copy(isLocallyStored = true)
-
-    private fun ExternalArtistBiography.toArtistBiography() =
-        ArtistBiography(this.artistName, this.biography, this.articleUrl, isLocallyStored = false)
-
+    private fun Card.markItAsLocal() { isLocallyStored = true
 }

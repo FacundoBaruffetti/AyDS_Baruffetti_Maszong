@@ -1,6 +1,5 @@
 package ayds.artist.external.LastFMService.data
 
-import ayds.artist.external.ExternalArtistBiography
 import java.io.IOException
 
 internal class ArticleTrackServiceImpl(
@@ -8,8 +7,8 @@ internal class ArticleTrackServiceImpl(
     private val lastFMtoArticleResolver: LastFMtoArticleResolver,
 ) : ArticleTrackService {
 
-    override fun getArticle(artistName: String): ExternalArtistBiography {
-        lateinit var artistBiography: ExternalArtistBiography
+    override fun getArticle(artistName: String): ArtistBiography {
+        lateinit var artistBiography: ArtistBiography
 
         try {
 

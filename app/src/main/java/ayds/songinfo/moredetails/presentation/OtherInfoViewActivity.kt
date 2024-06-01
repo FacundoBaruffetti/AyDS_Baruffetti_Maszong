@@ -36,8 +36,8 @@ class OtherInfoViewActivity : Activity() {
     }
 
     private fun observePresenter() {
-        presenter.artistBiographyObservable.subscribe { artistBiography ->
-            updateUi(artistBiography)
+        presenter.cardObservable.subscribe { card ->
+            updateUi(card)
         }
     }
 
@@ -60,9 +60,9 @@ class OtherInfoViewActivity : Activity() {
     private fun getArtistName() =
         intent.getStringExtra(ARTIST_NAME_EXTRA) ?: throw Exception("Missing artist name")
 
-    private fun updateUi(uiState: ArtistBiographyUiState) {
+    private fun updateUi(uiState: CardUiState) {
         runOnUiThread {
-            updateOpenUrlButton(uiState.articleUrl)
+            updateOpenUrlButton(uiState.infoUrl)
             updateLastFMLogo(uiState.imageUrl)
             updateArticleText(uiState.infoHtml)
         }

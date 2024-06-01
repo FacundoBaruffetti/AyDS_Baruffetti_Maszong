@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import kotlin.math.exp
 
 class SongDescriptionHelperTest {
 
@@ -36,7 +37,7 @@ class SongDescriptionHelperTest {
             "Song: Plush [*]\n" +
                 "Artist: Stone Temple Pilots\n" +
                 "Album: Core\n" +
-                "Release date: 1992"
+                "Release Date: 1992"
 
         assertEquals(expected, result)
     }
@@ -61,7 +62,7 @@ class SongDescriptionHelperTest {
             "Song: Plush \n" +
                 "Artist: Stone Temple Pilots\n" +
                 "Album: Core\n" +
-                "Release date: 1992"
+                "Release Date: 1992"
 
         assertEquals(expected, result)
     }

@@ -1,9 +1,9 @@
 package ayds.songinfo.moredetails.domain
 
-import ayds.songinfo.moredetails.domain.entities.ArtistBiography
+import ayds.songinfo.moredetails.domain.entities.Card
 
 interface  OtherInfoRepository {
-    fun getArtistBiography(artistName: String): ArtistBiography
+    fun getCard(artistName: String): List<Card>
 }
 
 
