@@ -3,10 +3,9 @@ package ayds.songinfo.moredetails.domain.entities
 data class Card(
     val artistName: String,
     val content: String,
-    val infoUrl: String,
+    val url: String,
     val source: CardSource,
-    var isLocallyStored: Boolean = false,
-    val logoUrl: String = ""
+    var isLocallyStored: Boolean = false
 )
 
 enum class CardSource{

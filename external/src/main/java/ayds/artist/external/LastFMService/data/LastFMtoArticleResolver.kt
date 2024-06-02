@@ -8,7 +8,6 @@ interface LastFMtoArticleResolver {
     fun map(serviceData: String?, artistName: String): ArtistBiography
 }
 
-
 private const val ARTIST = "artist"
 private const val BIO = "bio"
 private const val CONTENT = "content"

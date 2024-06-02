@@ -30,7 +30,7 @@ internal class BrokerImpl(
         if(article.content != "")
             cardList.add(article)
 
-        if(nyTimes != null)
+        if(nyTimes != null && nyTimes.content != "")
             cardList.add(nyTimes)
 
         if(wikipedia != null)
@@ -50,18 +50,33 @@ internal class BrokerImpl(
 
 
     private fun ArtistBiography.toCard() =
-        Card(this.artistName, this.biography ?: "", this.articleUrl, CardSource.LAST_FM)
+        Card(
+            this.artistName,
+            this.biography ?: "",
+            this.articleUrl,
+            CardSource.LAST_FM
+        )
 
     private fun NYTimesArticle.toCard(): Card? {
         var card: Card? = null
 
         if(this is NYTimesArticle.NYTimesArticleWithData)
-            card = Card(this.name?:"", this.info?:"", this.url, CardSource.NY_TIMES)
+            card = Card(
+                this.name?:"",
+                this.info?:"",
+                this.url,
+                CardSource.NY_TIMES
+            )
 
         return card
     }
 
     private fun WikipediaArticle.toCard(artistName: String) =
-        Card(artistName, this.description, this.wikipediaURL, CardSource.WIKIPEDIA, false, this.wikipediaLogoURL)
+        Card(
+            artistName,
+            this.description,
+            this.wikipediaURL,
+            CardSource.WIKIPEDIA
+        )
 
 }

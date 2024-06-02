@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Html
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,9 +15,17 @@ import ayds.songinfo.moredetails.injector.OtherInfoInjector
 
 class OtherInfoViewActivity : Activity() {
 
-    private lateinit var articleTextView: TextView
-    private lateinit var openUrlButton: Button
-    private lateinit var lastFMImageView: ImageView
+    private lateinit var cardContent1TextView: TextView
+    private lateinit var openUrl1Button: Button
+    private lateinit var source1ImageView: ImageView
+
+    private lateinit var cardContent2TextView: TextView
+    private lateinit var openUrl2Button: Button
+    private lateinit var source2ImageView: ImageView
+
+    private lateinit var cardContent3TextView: TextView
+    private lateinit var openUrl3Button: Button
+    private lateinit var source3ImageView: ImageView
 
     private lateinit var presenter: OtherInfoPresenter
 
@@ -27,7 +36,7 @@ class OtherInfoViewActivity : Activity() {
         initProperties()
         initPresenter()
         observePresenter()
-        getArtistInfoAsync()
+        getArtistCardAsync()
     }
 
     private fun initPresenter() {
@@ -42,36 +51,57 @@ class OtherInfoViewActivity : Activity() {
     }
 
     private fun initProperties() {
-        articleTextView = findViewById(R.id.textPane1)
-        openUrlButton = findViewById(R.id.openUrlButton)
-        lastFMImageView = findViewById(R.id.lastFMImageView)
+        cardContent1TextView = findViewById(R.id.cardContent1TextView)
+        openUrl1Button = findViewById(R.id.openUrl1Button)
+        source1ImageView = findViewById(R.id.source1ImageView)
+
+        cardContent2TextView = findViewById(R.id.cardContent2TextView)
+        openUrl2Button = findViewById(R.id.openUrl2Button)
+        source2ImageView = findViewById(R.id.source2ImageView)
+
+        cardContent3TextView = findViewById(R.id.cardContent3TextView)
+        openUrl3Button = findViewById(R.id.openUrl3Button)
+        source3ImageView = findViewById(R.id.source3ImageView)
     }
 
-    private fun getArtistInfoAsync(){
+    private fun getArtistCardAsync(){
         Thread {
-            getArtistInfo()
+            getArtistCard()
         }.start()
     }
 
-    private fun getArtistInfo(){
+    private fun getArtistCard(){
         presenter.getArtistInfo(getArtistName())
     }
 
     private fun getArtistName() =
         intent.getStringExtra(ARTIST_NAME_EXTRA) ?: throw Exception("Missing artist name")
 
-    private fun updateUi(uiState: CardUiState) {
+    private fun updateUi(uiStateList: List<CardUiState>) {
         runOnUiThread {
-            updateOpenUrlButton(uiState.infoUrl)
-            updateLastFMLogo(uiState.imageUrl)
-            updateArticleText(uiState.infoHtml)
+            openUrl1Button.updateOpenUrlButton (uiStateList[0].url)
+            source1ImageView.updateLogo(uiStateList[0].imageUrl)
+            cardContent1TextView.updateText(uiStateList[0].contentHtml)
+
+            if(uiStateList.size==2) {
+                openUrl2Button.updateOpenUrlButton(uiStateList[1].url)
+                source2ImageView.updateLogo(uiStateList[1].imageUrl)
+                cardContent2TextView.updateText(uiStateList[1].contentHtml)
+            }
+
+            if(uiStateList.size==3) {
+                openUrl3Button.updateOpenUrlButton(uiStateList[2].url)
+                source3ImageView.updateLogo(uiStateList[2].imageUrl)
+                cardContent3TextView.updateText(uiStateList[2].contentHtml)
+            }
         }
     }
 
-    private fun updateOpenUrlButton(articleUrl: String) {
-        openUrlButton.setOnClickListener {
-            navigateToUrl(articleUrl)
+    private fun Button.updateOpenUrlButton(url: String) {
+        this.setOnClickListener {
+            navigateToUrl(url)
         }
+        this.visibility = View.VISIBLE
     }
 
     private fun navigateToUrl(url: String) {
@@ -80,12 +110,12 @@ class OtherInfoViewActivity : Activity() {
         startActivity(intent)
     }
 
-    private fun updateLastFMLogo(imageUrl: String) {
-        Picasso.get().load(imageUrl).into(lastFMImageView)
+    private fun ImageView.updateLogo(imageUrl: String) {
+        Picasso.get().load(imageUrl).into(this)
     }
 
-    private fun updateArticleText(infoHtml: String) {
-        articleTextView.text = Html.fromHtml(infoHtml)
+    private fun TextView.updateText(infoHtml: String) {
+        this.text = Html.fromHtml(infoHtml)
     }
 
     companion object {

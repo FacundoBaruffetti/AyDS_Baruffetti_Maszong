@@ -26,5 +26,7 @@ class OtherInfoRepositoryImpl(
         return cardList
     }
 
-    private fun Card.markItAsLocal() { isLocallyStored = true
+    private fun Card.markItAsLocal() {
+        isLocallyStored = true
+    }
 }

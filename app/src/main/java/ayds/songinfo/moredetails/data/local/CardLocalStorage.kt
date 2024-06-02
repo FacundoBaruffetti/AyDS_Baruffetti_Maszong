@@ -4,7 +4,7 @@ import ayds.songinfo.moredetails.domain.entities.Card
 
 interface CardLocalStorage {
 
-    fun insertCard(article: Card)
+    fun insertCard(card: Card)
 
     fun getCard(artistName: String): Card?
 }

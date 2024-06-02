@@ -21,7 +21,7 @@ internal class CardLocalStorageRoomImpl(
     private fun Card.toCardEntity() = CardEntity(
         this.artistName,
         this.content,
-        this.infoUrl,
+        this.url,
         this.source.ordinal,
     )
 
